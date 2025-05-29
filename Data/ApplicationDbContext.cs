@@ -8,6 +8,11 @@ namespace PaymentOptions.Data
         public DbSet<MCarrierCode> MCarrierCode { get; set; }
         public DbSet<MCultureCode> MCultureCode { get; set; }
         public DbSet<MCurrencyCode> MCurrencyCode { get; set; }
+        public DbSet<PaymentTab> PaymentTabs { get; set; }
+        public DbSet<PaymentChannel> PaymentChannels { get; set; }
+        public DbSet<PaymentMethod> PaymentMethods { get; set; }
+        public DbSet<MLob> MLobs { get; set; }
+        public DbSet<ChannelDetail> ChannelDetails { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

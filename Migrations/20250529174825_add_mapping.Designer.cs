@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaymentOptions.Data;
 
@@ -11,9 +12,11 @@ using PaymentOptions.Data;
 namespace PaymentOptions.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250529174825_add_mapping")]
+    partial class add_mapping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,21 @@ namespace PaymentOptions.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("MLobPaymentMethod", b =>
+                {
+                    b.Property<int>("MLobsLobId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentMethodsPaymentMethodId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MLobsLobId", "PaymentMethodsPaymentMethodId");
+
+                    b.HasIndex("PaymentMethodsPaymentMethodId");
+
+                    b.ToTable("MLobPaymentMethod");
+                });
 
             modelBuilder.Entity("PaymentOptions.Model.ChannelDetail", b =>
                 {
@@ -201,12 +219,6 @@ namespace PaymentOptions.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CultureIds")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CurrencyIds")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
@@ -224,9 +236,6 @@ namespace PaymentOptions.Migrations
 
                     b.Property<int>("IsActive")
                         .HasColumnType("int");
-
-                    b.Property<string>("MLobs")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -314,6 +323,21 @@ namespace PaymentOptions.Migrations
                     b.HasIndex("PaymentChannelId");
 
                     b.ToTable("PaymentTabs");
+                });
+
+            modelBuilder.Entity("MLobPaymentMethod", b =>
+                {
+                    b.HasOne("PaymentOptions.Model.MLob", null)
+                        .WithMany()
+                        .HasForeignKey("MLobsLobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PaymentOptions.Model.PaymentMethod", null)
+                        .WithMany()
+                        .HasForeignKey("PaymentMethodsPaymentMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PaymentOptions.Model.PaymentMethod", b =>

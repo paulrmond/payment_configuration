@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaymentOptions.Data;
 
@@ -11,9 +12,11 @@ using PaymentOptions.Data;
 namespace PaymentOptions.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250529174328_add_pay_method_code")]
+    partial class add_pay_method_code
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,26 +25,19 @@ namespace PaymentOptions.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("PaymentOptions.Model.ChannelDetail", b =>
+            modelBuilder.Entity("MLobPaymentMethod", b =>
                 {
-                    b.Property<int>("ChannelDetailId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("MLobsLobId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChannelDetailId"));
+                    b.Property<int>("PaymentMethodsPaymentMethodId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ChannelName")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("MLobsLobId", "PaymentMethodsPaymentMethodId");
 
-                    b.Property<string>("PlatformName")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("PaymentMethodsPaymentMethodId");
 
-                    b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ChannelDetailId");
-
-                    b.ToTable("ChannelDetails");
+                    b.ToTable("MLobPaymentMethod");
                 });
 
             modelBuilder.Entity("PaymentOptions.Model.MCarrierCode", b =>
@@ -150,7 +146,7 @@ namespace PaymentOptions.Migrations
 
                     b.HasKey("LobId");
 
-                    b.ToTable("MLobs");
+                    b.ToTable("MLob");
                 });
 
             modelBuilder.Entity("PaymentOptions.Model.PaymentChannel", b =>
@@ -201,12 +197,6 @@ namespace PaymentOptions.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CultureIds")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CurrencyIds")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
@@ -224,9 +214,6 @@ namespace PaymentOptions.Migrations
 
                     b.Property<int>("IsActive")
                         .HasColumnType("int");
-
-                    b.Property<string>("MLobs")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
@@ -262,7 +249,7 @@ namespace PaymentOptions.Migrations
 
                     b.HasIndex("PaymentTabId");
 
-                    b.ToTable("PaymentMethods");
+                    b.ToTable("PaymentMethod");
                 });
 
             modelBuilder.Entity("PaymentOptions.Model.PaymentTab", b =>
@@ -314,6 +301,21 @@ namespace PaymentOptions.Migrations
                     b.HasIndex("PaymentChannelId");
 
                     b.ToTable("PaymentTabs");
+                });
+
+            modelBuilder.Entity("MLobPaymentMethod", b =>
+                {
+                    b.HasOne("PaymentOptions.Model.MLob", null)
+                        .WithMany()
+                        .HasForeignKey("MLobsLobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PaymentOptions.Model.PaymentMethod", null)
+                        .WithMany()
+                        .HasForeignKey("PaymentMethodsPaymentMethodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PaymentOptions.Model.PaymentMethod", b =>

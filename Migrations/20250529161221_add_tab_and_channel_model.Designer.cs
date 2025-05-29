@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaymentOptions.Data;
 
@@ -11,9 +12,11 @@ using PaymentOptions.Data;
 namespace PaymentOptions.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250529161221_add_tab_and_channel_model")]
+    partial class add_tab_and_channel_model
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,28 +24,6 @@ namespace PaymentOptions.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("PaymentOptions.Model.ChannelDetail", b =>
-                {
-                    b.Property<int>("ChannelDetailId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChannelDetailId"));
-
-                    b.Property<string>("ChannelName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PlatformName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ChannelDetailId");
-
-                    b.ToTable("ChannelDetails");
-                });
 
             modelBuilder.Entity("PaymentOptions.Model.MCarrierCode", b =>
                 {
@@ -131,28 +112,6 @@ namespace PaymentOptions.Migrations
                     b.ToTable("MCurrencyCode");
                 });
 
-            modelBuilder.Entity("PaymentOptions.Model.MLob", b =>
-                {
-                    b.Property<int>("LobId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LobId"));
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ChannelHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LobName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("LobId");
-
-                    b.ToTable("MLobs");
-                });
-
             modelBuilder.Entity("PaymentOptions.Model.PaymentChannel", b =>
                 {
                     b.Property<int>("PaymentChannelId")
@@ -188,81 +147,6 @@ namespace PaymentOptions.Migrations
                     b.HasKey("PaymentChannelId");
 
                     b.ToTable("PaymentChannels");
-                });
-
-            modelBuilder.Entity("PaymentOptions.Model.PaymentMethod", b =>
-                {
-                    b.Property<int>("PaymentMethodId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentMethodId"));
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CultureIds")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CurrencyIds")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Discount")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FiCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GatewayId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IsActive")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MLobs")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MoreInfoUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PayMethodCode")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PayMethodName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PaymentTabId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PreExpand")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProcessingFeeCodes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SessionId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SortOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SupportedBanksImage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PaymentMethodId");
-
-                    b.HasIndex("PaymentTabId");
-
-                    b.ToTable("PaymentMethods");
                 });
 
             modelBuilder.Entity("PaymentOptions.Model.PaymentTab", b =>
@@ -316,17 +200,6 @@ namespace PaymentOptions.Migrations
                     b.ToTable("PaymentTabs");
                 });
 
-            modelBuilder.Entity("PaymentOptions.Model.PaymentMethod", b =>
-                {
-                    b.HasOne("PaymentOptions.Model.PaymentTab", "PaymentTab")
-                        .WithMany("PaymentMethods")
-                        .HasForeignKey("PaymentTabId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PaymentTab");
-                });
-
             modelBuilder.Entity("PaymentOptions.Model.PaymentTab", b =>
                 {
                     b.HasOne("PaymentOptions.Model.PaymentChannel", "Channel")
@@ -341,11 +214,6 @@ namespace PaymentOptions.Migrations
             modelBuilder.Entity("PaymentOptions.Model.PaymentChannel", b =>
                 {
                     b.Navigation("Tabs");
-                });
-
-            modelBuilder.Entity("PaymentOptions.Model.PaymentTab", b =>
-                {
-                    b.Navigation("PaymentMethods");
                 });
 #pragma warning restore 612, 618
         }

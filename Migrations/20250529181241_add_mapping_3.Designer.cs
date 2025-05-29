@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaymentOptions.Data;
 
@@ -11,9 +12,11 @@ using PaymentOptions.Data;
 namespace PaymentOptions.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250529181241_add_mapping_3")]
+    partial class add_mapping_3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,6 +228,9 @@ namespace PaymentOptions.Migrations
                     b.Property<int>("IsActive")
                         .HasColumnType("int");
 
+                    b.Property<int?>("MLobLobId")
+                        .HasColumnType("int");
+
                     b.Property<string>("MLobs")
                         .HasColumnType("nvarchar(max)");
 
@@ -259,6 +265,8 @@ namespace PaymentOptions.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PaymentMethodId");
+
+                    b.HasIndex("MLobLobId");
 
                     b.HasIndex("PaymentTabId");
 
@@ -318,6 +326,10 @@ namespace PaymentOptions.Migrations
 
             modelBuilder.Entity("PaymentOptions.Model.PaymentMethod", b =>
                 {
+                    b.HasOne("PaymentOptions.Model.MLob", null)
+                        .WithMany("PaymentMethods")
+                        .HasForeignKey("MLobLobId");
+
                     b.HasOne("PaymentOptions.Model.PaymentTab", "PaymentTab")
                         .WithMany("PaymentMethods")
                         .HasForeignKey("PaymentTabId")
@@ -336,6 +348,11 @@ namespace PaymentOptions.Migrations
                         .IsRequired();
 
                     b.Navigation("Channel");
+                });
+
+            modelBuilder.Entity("PaymentOptions.Model.MLob", b =>
+                {
+                    b.Navigation("PaymentMethods");
                 });
 
             modelBuilder.Entity("PaymentOptions.Model.PaymentChannel", b =>
