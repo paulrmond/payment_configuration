@@ -2,7 +2,7 @@
 
 namespace PaymentOptions.Model
 {
-    public class ChannelDetail
+    public class MChannelDetail
     {
         [Key]
         public int ChannelDetailId { get; set; }

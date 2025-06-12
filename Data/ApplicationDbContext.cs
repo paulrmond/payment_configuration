@@ -12,7 +12,8 @@ namespace PaymentOptions.Data
         public DbSet<PaymentChannel> PaymentChannels { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<MLob> MLobs { get; set; }
-        public DbSet<ChannelDetail> ChannelDetails { get; set; }
+        public DbSet<MChannelDetail> ChannelDetails { get; set; }
+        public DbSet<MChannelHash> MChannelHashes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

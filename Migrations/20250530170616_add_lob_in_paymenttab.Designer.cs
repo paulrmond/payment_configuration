@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PaymentOptions.Data;
 
@@ -11,9 +12,11 @@ using PaymentOptions.Data;
 namespace PaymentOptions.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250530170616_add_lob_in_paymenttab")]
+    partial class add_lob_in_paymenttab
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,28 +82,6 @@ namespace PaymentOptions.Migrations
                     b.HasKey("ChannelDetailId");
 
                     b.ToTable("ChannelDetails");
-                });
-
-            modelBuilder.Entity("PaymentOptions.Model.MChannelHash", b =>
-                {
-                    b.Property<int>("ChannelHashId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChannelHashId"));
-
-                    b.Property<string>("ChannelHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ChannelHashInfo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ChannelHashName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ChannelHashId");
-
-                    b.ToTable("MChannelHashes");
                 });
 
             modelBuilder.Entity("PaymentOptions.Model.MCultureCode", b =>
