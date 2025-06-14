@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using PaymentOptions.Model;
 
 namespace PaymentOptions.Data
@@ -15,10 +16,17 @@ namespace PaymentOptions.Data
         public DbSet<MChannelDetail> ChannelDetails { get; set; }
         public DbSet<MChannelHash> MChannelHashes { get; set; }
 
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        {
+            //Pass the options to the base class.
+        }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=DESKTOP-U0FCH2L;Database=PaymentConfigurations;TrustServerCertificate=True;Trusted_Connection=True");
+            //optionsBuilder.UseSqlServer("Server=DESKTOP-U0FCH2L;Database=PaymentConfigurations;TrustServerCertificate=True;Trusted_Connection=True");
+            //optionsBuilder.UseSqlServer(configuration.GetConnectionString("DefaultConnectionString"));
 
         }
 

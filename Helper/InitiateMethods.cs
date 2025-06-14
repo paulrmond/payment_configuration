@@ -5,9 +5,9 @@ namespace PaymentOptions.Helper
 {
     public class InitiateMethods
     {
-        public InitiateMethods() 
+        public InitiateMethods(ApplicationDbContext applicationDbContext) 
         { 
-            using(ApplicationDbContext context = new())
+            using(ApplicationDbContext context = applicationDbContext)
             {
                 context.Database.EnsureCreated();
                 if(context.Database.GetPendingMigrations().Count() > 0)
