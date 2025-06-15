@@ -25,21 +25,33 @@ namespace PaymentOptions.Controllers.TModels
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PaymentMethod>>> GetPaymentMethods()
         {
-            return await _context.PaymentMethods.ToListAsync();
+            List<LOBCurrencyMapping> lOBCurrencyMappings = new List<LOBCurrencyMapping>();
+            List<PaymentMethod> payment_method = new List<PaymentMethod>();
+            payment_method = await _context.PaymentMethods.ToListAsync();
+            foreach (var item in payment_method)
+            {
+                var tempLobCurrencyMapping = await _context.LOBCurrencyMappings.Where(x => x.PaymentMethodId == item.PaymentMethodId).ToListAsync();
+                //Referenced to current object
+                item.LOBCurrencyMapping = tempLobCurrencyMapping;
+            }
+            return payment_method;
         }
 
         // GET: api/PaymentMethods/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PaymentMethod>> GetPaymentMethod(int id)
         {
-            var paymentMethod = await _context.PaymentMethods.FindAsync(id);
-
-            if (paymentMethod == null)
-            {
+            List<LOBCurrencyMapping> lOBCurrencyMappings = new List<LOBCurrencyMapping>();
+            PaymentMethod payment_method = new PaymentMethod();
+            payment_method = await _context.PaymentMethods.FindAsync(id);
+            if (payment_method == null)
                 return NotFound();
-            }
 
-            return paymentMethod;
+            var tempLobCurrencyMapping = await _context.LOBCurrencyMappings.Where(x => x.PaymentMethodId == id).ToListAsync();
+            //Referenced to current object
+            payment_method.LOBCurrencyMapping = tempLobCurrencyMapping;
+
+            return payment_method;
         }
 
         // PUT: api/PaymentMethods/5

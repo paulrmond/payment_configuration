@@ -31,5 +31,8 @@ namespace PaymentOptions.Model
         public int PaymentTabId { get; set; }
         public PaymentTab PaymentTab { get; set; }
 
+        [NotMapped]
+        public List<LOBCurrencyMapping> LOBCurrencyMapping { get; set;
+
     }
 }

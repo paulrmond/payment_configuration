@@ -15,6 +15,7 @@ namespace PaymentOptions.Data
         public DbSet<MLob> MLobs { get; set; }
         public DbSet<MChannelDetail> ChannelDetails { get; set; }
         public DbSet<MChannelHash> MChannelHashes { get; set; }
+        public DbSet<LOBCurrencyMapping> LOBCurrencyMappings { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
